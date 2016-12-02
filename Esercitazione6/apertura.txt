@@ -1,0 +1,7 @@
+E49	Nimzo-Indiana	1 d4, Cf6; 2 c4, e6; 3 Cc3, Ab4
+E86	Est-Indiana	1 d4, Cf6; 2 c4, e6; 3 Cc3, Ag7
+A14	Partita  Inglese	1 c4, e6; 2 Cf3, d5; 3 g3, Cf6; 4 Ag2, Ae7
+B22	Difesa Siciliana	1 e4, c5; 2 c3
+D30	Gambetto di donna	1 d4, d5; 2 c4 e6
+B17	Caro-Kann	1 e4, c6; 2 d4, d5; 3 Cc3, d:e6; 4 C:e4, Cd7
+C01	Difesa Francese	1 e4, e6; 2 d4

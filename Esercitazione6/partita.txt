@@ -1,0 +1,8 @@
+Deep Blue	Kasparov	Filadelfia	1996	1	B22	1-0	37
+Deep Blue	Kasparov	Filadelfia	1996	3	B22	1/2	39
+Kasparov	Deep Blue	Filadelfia	1996	6	\N	\N	\N
+Kasparov	Karpov	Siviglia	1987	24	A14	\N	64
+Kasparov	Karpov	Siviglia	1986	14	B17	1/2	21
+Karpov	Kasparov	Linares	1993	10	E86	0-1	27
+Capablanca	Lasker	La Havana	1921	5	\N	1-0	\N
+Capablanca	Alekhine	Buenos Aires	1927	1	C01	0-1	43

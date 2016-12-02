@@ -1,0 +1,7 @@
+Karpov	Russia
+Kasparov	Russia
+Kramnik	Russia
+Deep Blue	Null
+Lasker	Germania
+Capablanca	Cuba
+Alekhine	Russia
