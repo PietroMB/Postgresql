@@ -29,3 +29,28 @@ CREATE TABLE scacchi.partita(
   num_mosse INTEGER CHECK (num_mosse >= 0 OR num_mosse IS NULL), 
   PRIMARY KEY (bianco,nero,luogo,anno,round)
 );
+
+--Popolazione Tabelle
+
+set search_path to scacchi;
+\copy giocatore from giocatore.txt;
+\copy apertura from apertura.txt;
+\copy partita from partita.txt;
+
+--Query
+
+select partita.num_mosse from partita, apertura where partita.eco=apertura.eco and apertura.nome = 'Difesa Francese';
+select nazionalita from giocatore, partita where anno = '1996' and (bianco=nome or nero=nome) group by (nome);
+select a.nome, variante, risultato from apertura as a, giocatore as g, partita as p where p.eco=a.eco and (bianco=g.nome or nero=g.nome) and g.nome='Kasparov' and risultato='1/2';
+select nome from giocatore where nazionalita=(select nazionalita from giocatore where nome='Kramnik');
+select nome, variante from apertura where nome>(select nome from apertura where eco='E86');
+select p.eco, anno, luogo from partita as p, apertura as a where a.variante like '%2 c3' and p.eco=a.eco;
+select eco, bianco from partita where eco not in (select eco from partita where bianco='Kasparov'and eco is not null);
+select eco from partita where round<(select min(round) from partita where bianco='Deep Blue' or nero='Deep Blue');
+select nazionalita from giocatore, partita where nome in (select bianco from partita where risultato='1-0');
+--Prof Version
+select nero from partita where nero not in (select nero from partita where risultato <> '0-1' or risultato is null);
+--My Version
+select nero from partita where nero not in (select nero from partita where risultato <> '0-1') and risultato is not null;
+select a.nome from apertura as a, giocatore as g, partita as p where g.nazionalita='Null' and (g.nome = p.bianco or g.nome = p.nero) and p.eco = a.eco;  
+select nero,count(nero) from partita where risultato='0-1' group by nero;
