@@ -1,8 +1,10 @@
-drop schema if exists biblioteca cascade;
+drop schema if exists biblioteca cascade;/*elimina io schema se esiste*/
 
-create schema biblioteca;
+create schema biblioteca;/*crea lo schema*/
 
-set search_path to biblioteca;
+set search_path to biblioteca;/*comando pratico per non definire ogni volta schema.**/
+
+/*------------------------inserimento delle tabelle------------------------*/
 
 create table scrittore(
 	nome varchar(50) primary key,
@@ -35,12 +37,15 @@ create table ha_letto(
 	primary key(ISBN, socio)
 );
 
+/*------------------------copia dei file per popolare le tabelle------------------------*/
 
 \copy scrittore from Scrittore.txt;
 \copy generi from Genere.txt;
 \copy libro from Libro.txt;
 \copy socio from Socio.txt;
 \copy ha_letto (socio, ISBN) from Ha_letto.txt;
+
+/*------------------------query------------------------*/
 
 /*a*/select s.nome from socio as s, ha_letto as h where h.socio=s.id_socio and s.sesso='F' group by(s.nome); 
 
