@@ -67,5 +67,4 @@ create table ha_letto(
 /*n*/select s.id_socio from socio as s, ha_letto as h where h.socio=s.Id_socio and h.ISBN<(select MIN(li.ISBN) from libro as li, generi as ge where ge.nome=li.genere and ge.sala='B') group by s.id_socio;
 
 
-
 /*d,f da fare*/
