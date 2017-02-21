@@ -71,5 +71,14 @@ create table ha_letto(
 
 /*n*/select s.id_socio from socio as s, ha_letto as h where h.socio=s.Id_socio and h.ISBN<(select MIN(li.ISBN) from libro as li, generi as ge where ge.nome=li.genere and ge.sala='B') group by s.id_socio;
 
+/*o*/select titolo, autore from libro where ISBN>(select MAX(h.ISBN) from ha_letto as h, socio as s where s.id_socio=h.socio and s.nome='Clotilde Bianchi');
+
+/*p*/select s1.nome, s2.nome from socio as s1, socio as s2, ha_letto as h1, ha_letto as h2 where s1.id_socio!=s2.id_socio and s1.id_socio=h1.socio and s2.id_socio=h2.socio and h1.ISBN!=h2.ISBN group by (s1.nome, s2.nome);
+
+/*q*/select s.nome from socio as s, ha_letto as h where s.id_socio=h.socio and h.ISBN = all (select ISBN from libro where genere='poesia' and ISBN is not null order by ISBN desc); /*non va*/
+
+/*r*/select l.titolo, h.isbn from libro as l, ha_letto as h where l.ISBN=h.ISBN group by (h.ISBN, l.titolo) having count(h.ISBN)>1;
+
+/*s*/select socio, count(isbn) from ha_letto group by socio;
 
 /*d,f da fare*/
