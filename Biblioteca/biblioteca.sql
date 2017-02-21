@@ -1,5 +1,6 @@
 drop schema if exists biblioteca cascade;
 create schema biblioteca;
+
 set search_path to biblioteca;
 create table scrittore(
 	nome varchar(50) primary key,
