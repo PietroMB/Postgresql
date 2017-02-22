@@ -53,7 +53,11 @@ create table ha_letto(
 
 /*c*/select l.titolo, g.sala from libro as l, generi as g where l.genere=g.nome;
 
+/*d*/select l.titolo, g.sala from libro as l left join generi as g on l.genere=g.nome;
+
 /*e*/select s.id_socio from socio as s, generi as g, libro as l, ha_letto as h where s.id_socio=h.socio and l.ISBN=h.ISBN and l.genere=g.nome and g.sala='A';
+
+/*f*/select s1.nome, s2.nome from socio as s1, socio as s2, ha_letto as h1, ha_letto as h2 where h1.ISBN=h2.ISBN and h1.socio!=h2.socio and s1.id_socio=h1.socio and s2.id_socio=h2.socio;
 
 /*g*/select s.nome from socio as s, generi as g, libro as l, ha_letto as h where s.id_socio=h.socio and l.ISBN=h.ISBN and l.genere=g.nome and g.sala='A' group by (s.nome);
 
@@ -81,4 +85,4 @@ create table ha_letto(
 
 /*s*/select socio, count(isbn) from ha_letto group by socio; /*non completa*/
  
-/*d,f da fare*/
+
