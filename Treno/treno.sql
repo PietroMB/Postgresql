@@ -49,3 +49,7 @@ insert into treno values('a1', current_timestamp, '00001', current_timestamp + (
 insert into treno values('a2', current_timestamp, '00003', current_timestamp + (160*interval '1 minute'), '00005', 'fs');
 insert into treno values('a3', current_timestamp, '00002', current_timestamp + (260*interval '1 minute'), '00004', 'fs');
 insert into treno values('b1', current_timestamp, '00006', current_timestamp + (900*interval '1 minute'), '00002', 'fs');
+
+insert into percorso values('00001','Perugia');
+insert into percorso values('00002','Bologna');
+insert into percorso values('00003','Parigi');
