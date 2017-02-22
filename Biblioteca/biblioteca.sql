@@ -101,9 +101,16 @@ create table ex_socio(
 	primary key (nome,data)
 );
 
-create function archivia_socio() returns trigger $BODY$
-define
-nome varchar(50)
-data date
-begin
+create function archivia_socio() returns trigger as $BODY$
+	declare
+	nome varchar(50);
+	data date;
+	begin
+	insert into ex_socio values(old.nome,current_date);
+	return new;
+	end;
+$BODY$
+LANGUAGE PLPGSQL;
+
+create trigger archivia_socio after delete on socio for each row execute procedure archivia_socio();
 
