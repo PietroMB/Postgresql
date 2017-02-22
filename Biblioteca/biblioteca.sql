@@ -84,7 +84,8 @@ create table ha_letto(
 /*r*/select l.titolo, h.isbn from libro as l, ha_letto as h where l.ISBN=h.ISBN group by (h.ISBN, l.titolo) having count(h.ISBN)>1;
 
 /*s*/select socio, count(isbn) from ha_letto group by socio; /*non completa*/
- 
+
+/*u*/select s.nome from scrittore s, libro l where l.autore=s.nome having count(s.nome) group by s.nome;
 
 
 
