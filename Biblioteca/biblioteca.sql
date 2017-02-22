@@ -65,7 +65,7 @@ create table ha_letto(
 
 /*i*/select s.id_socio from socio as s, generi as g, libro as l, ha_letto as h where s.id_socio=h.socio and l.ISBN=h.ISBN and l.genere=g.nome and g.sala != 'B' group by(s.id_socio);
 
-/*j*/select s.id_socio from socio as s, generi as g, libro as l, ha_letto as h where s.id_socio=h.socio and l.genere=g.nome and g.sala != 'B' group by(s.id_socio);
+/*j*/select s.id_socio from socio s left join ha_letto h on s.id_socio=h.socio, generi as g, libro as l where l.isbn=h.isbn and l.genere=g.nome and s.id_socio not in (select h.socio from ha_letto h, generi g, libro l where l.isbn=h.isbn and l.genere = g.nome and g.sala='B') group by(s.id_socio);
 
 /*k*/select l.titolo from libro as l, generi as g where l.genere=g.nome and g.sala=(select ge.sala from generi as ge, libro as li where li.genere=ge.nome and li.titolo='Ossi di seppia');
 
@@ -83,9 +83,27 @@ create table ha_letto(
 
 /*r*/select l.titolo, h.isbn from libro as l, ha_letto as h where l.ISBN=h.ISBN group by (h.ISBN, l.titolo) having count(h.ISBN)>1;
 
-/*s*/select socio, count(isbn) from ha_letto group by socio; /*non completa*/
+/*s*/select socio, count(socio) from ha_letto group by socio;
 
-/*u*/select s.nome from scrittore s, libro l where l.autore=s.nome having count(s.nome) group by s.nome;
+/*t*/select s.id_socio,count(h.socio) from socio s left join ha_letto h on s.id_socio=h.socio group by (s.id_socio, h.socio);
 
+/*u*/select autore, count(autore) from libro group by autore;
 
+/*v*/select s.nome, count(s.nome) from socio s, ha_letto h where s.id_socio=h.socio group by s.nome having count(h.isbn)< any (select count(h.isbn) from ha_letto h, socio s where s.id_socio=h.socio and s.nome = 'Clotilde Bianchi'); 
+
+/*w*/select l.autore, count(l.autore) from libro l, ha_letto h, socio s where l.isbn=h.isbn and h.socio=s.id_socio and s.sesso='F' group by l.autore order by l.autore asc limit 1;
+
+/*------------------------seconda parte------------------------*/
+
+create table ex_socio(
+	nome varchar(50),
+	data date,
+	primary key (nome,data)
+);
+
+create function archivia_socio() returns trigger $BODY$
+define
+nome varchar(50)
+data date
+begin
 
