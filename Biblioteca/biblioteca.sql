@@ -79,8 +79,7 @@ create table ha_letto(
 
 /*p*/select s1.nome, s2.nome from socio as s1, socio as s2, ha_letto as h1, ha_letto as h2 where s1.id_socio!=s2.id_socio and s1.id_socio=h1.socio and s2.id_socio=h2.socio and h1.ISBN!=h2.ISBN group by (s1.nome, s2.nome);
 
-/*q*/SELECT S.nome FROM socio S WHERE NOT EXISTS (SELECT * FROM libro L WHERE L.genere='poesia' AND NOT EXISTS (SELECT * FROM ha_letto H WHERE L.ISBN=H.ISBN AND S.id_socio=H.socio));
-
+/*q*/select s.nome from socio s where s.id_socio=(select h.socio from ha_letto h where h.isbn in (select l.isbn from libro l where l.genere='poesia') group by h.socio having count(*) = (select count(*) from libro l2 where l2.genere='poesia'));
 /*r*/select l.titolo, h.isbn from libro as l, ha_letto as h where l.ISBN=h.ISBN group by (h.ISBN, l.titolo) having count(h.ISBN)>1;
 
 /*s*/select socio, count(socio) from ha_letto group by socio;
