@@ -5,7 +5,6 @@ $BODY$
 	variabile [tipo];
 
 	begin
-
 		query
 	end
 $BODY$
