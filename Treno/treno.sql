@@ -12,7 +12,7 @@ create table citta(
 
 create table stazione(
 	codice varchar(50) primary key,
-	nome varchar(50) unique,
+	nome varchar(50),
 	categoria varchar(50),
 	citta varchar(50) references citta(nome)
 );
@@ -66,13 +66,13 @@ select * from treno where stazionep not in (select codice from stazione where ci
 select x.azienda from treno x where x.stazionep in (select s.codice from stazione s) group by x.azienda having count (*) = (select count(*) from stazione);
 
 /*java*/
-
+/*
         String url="jdbc:postgresql://127.0.0.1/postgres";
         String userid="postgres";
         String password="postgres";
 	con=DriverManager.getConnection(url,userid,password);
 	Statment s = con.createStatment();
-	s.executeUpdate("alter table citta add numStazioni int;");
+	s.executeUpdate("alter table citta add numStazioni int");
 	ResultSet rs = s.executeQuery("select nome, count(codice) from fs.stazione group by citta");
 	PreparedStatment ps = con.preparedStatment("insert into fs.citta values (?,?)");
 	while(rs.next()){
@@ -85,13 +85,29 @@ select x.azienda from treno x where x.stazionep in (select s.codice from stazion
 	rs.close();
 	ps.close();
 	s.close();
-	con.close();
+	con.close();*/
 
 /*trigger*/
+
+alter table citta add numStazioni int;
 
 create function contac() returns trigger as $BODY$
 	declare 
 	citta varchar(50);
-	numero int;
 	begin
-		update conta set new.numero=(select count(s.codice) from stazione s where s.citta=old.citta) where citta=old.citta;
+
+		update citta set numstazioni=(select count(s.citta) from stazione s where s.citta=new.citta group by s.citta) where nome=new.citta;
+		RETURN NEW;
+	end
+	$BODY$
+LANGUAGE PLPGSQL;
+
+create trigger contac after delete or update or insert on stazione for each row execute procedure contac();
+
+/*
+	r record;
+
+		FOR r IN SELECT stazione.citta, COUNT(*) FROM stazione GROUP BY stazione.citta LOOP
+			UPDATE citta SET numstazioni = r.count WHERE citta.nome = r.citta;
+		END LOOP;
+*/
