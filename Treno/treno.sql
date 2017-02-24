@@ -12,7 +12,7 @@ create table citta(
 
 create table stazione(
 	codice varchar(50) primary key,
-	nome varchar(50),
+	nome varchar(50) unique,
 	categoria varchar(50),
 	citta varchar(50) references citta(nome)
 );
@@ -49,7 +49,19 @@ insert into treno values('a1', current_timestamp, '00001', current_timestamp + (
 insert into treno values('a2', current_timestamp, '00003', current_timestamp + (160*interval '1 minute'), '00005', 'fs');
 insert into treno values('a3', current_timestamp, '00002', current_timestamp + (260*interval '1 minute'), '00004', 'fs');
 insert into treno values('b1', current_timestamp, '00006', current_timestamp + (900*interval '1 minute'), '00002', 'fs');
+insert into treno values('b2', current_timestamp, '00004', current_timestamp + (900*interval '1 minute'), '00002', 'fs');
+insert into treno values('b3', current_timestamp, '00005', current_timestamp + (900*interval '1 minute'), '00002', 'fs');
+insert into treno values('b4', current_timestamp, '00005', current_timestamp + (900*interval '1 minute'), '00002', 'italo');
 
-insert into percorso values('00001','Perugia');
-insert into percorso values('00002','Bologna');
-insert into percorso values('00003','Parigi');
+insert into percorso values('a1','Perugia');
+insert into percorso values('a2','Bologna');
+insert into percorso values('b1','Parigi');
+
+
+
+select * from treno where stazionep = (select codice from stazione where citta='Perugia') or stazionea=(select codice from stazione where citta='Roma');
+
+select * from treno where stazionep != (select codice from stazione where citta='Bologna');
+
+select x.azienda from treno x where x.stazionep in (select s.codice from stazione s) group by x.azienda having count (*) = (select count(*) from stazione);
+
