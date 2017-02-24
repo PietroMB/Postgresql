@@ -57,7 +57,7 @@ insert into percorso values('a1','Perugia');
 insert into percorso values('a2','Bologna');
 insert into percorso values('b1','Parigi');
 
-
+/*query*/
 
 select * from treno where stazionep = (select codice from stazione where citta='Perugia') or stazionea=(select codice from stazione where citta='Roma');
 
