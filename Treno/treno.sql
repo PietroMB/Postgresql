@@ -59,9 +59,39 @@ insert into percorso values('b1','Parigi');
 
 /*query*/
 
-select * from treno where stazionep = (select codice from stazione where citta='Perugia') or stazionea=(select codice from stazione where citta='Roma');
+select * from treno where stazionep in (select codice from stazione where citta='Perugia') or stazionea in (select codice from stazione where citta='Roma');
 
-select * from treno where stazionep != (select codice from stazione where citta='Bologna');
+select * from treno where stazionep not in (select codice from stazione where citta='Bologna');
 
 select x.azienda from treno x where x.stazionep in (select s.codice from stazione s) group by x.azienda having count (*) = (select count(*) from stazione);
 
+/*java*/
+
+        String url="jdbc:postgresql://127.0.0.1/postgres";
+        String userid="postgres";
+        String password="postgres";
+	con=DriverManager.getConnection(url,userid,password);
+	Statment s = con.createStatment();
+	s.executeUpdate("alter table citta add numStazioni int;");
+	ResultSet rs = s.executeQuery("select nome, count(codice) from fs.stazione group by citta");
+	PreparedStatment ps = con.preparedStatment("insert into fs.citta values (?,?)");
+	while(rs.next()){
+		String citta=rs.getString("citta");
+		int numStazioni=(int)rs.getString("count");
+		ps.setString(1, citta);
+		ps.setString(2, numStazioni);
+		ps.execute();
+	}
+	rs.close();
+	ps.close();
+	s.close();
+	con.close();
+
+/*trigger*/
+
+create function contac() returns trigger as $BODY$
+	declare 
+	citta varchar(50);
+	numero int;
+	begin
+		update conta set new.numero=(select count(s.codice) from stazione s where s.citta=old.citta) where citta=old.citta;
