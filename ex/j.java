@@ -15,6 +15,7 @@
                 ps.setString(2, socio);
                 ps.execute();
             }
+            
             rs.close();
             ps.close();
             stmt.close();
