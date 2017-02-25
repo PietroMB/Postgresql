@@ -16,7 +16,7 @@ create table generi(
 	nome varchar(50) primary key,
 	sala varchar(50)
 );
-	
+
 create table libro(
 	ISBN varchar(20) primary key,
 	titolo varchar(50),
@@ -47,7 +47,7 @@ create table ha_letto(
 
 /*------------------------query------------------------*/
 
-/*a*/select s.nome from socio as s, ha_letto as h where h.socio=s.id_socio and s.sesso='F' group by(s.nome); 
+/*a*/select s.nome from socio as s, ha_letto as h where h.socio=s.id_socio and s.sesso='F' group by(s.nome);
 
 /*b*/select l.titolo from libro as l, generi as g where l.genere=g.nome and g.sala='A';
 
@@ -79,7 +79,12 @@ create table ha_letto(
 
 /*p*/select s1.nome, s2.nome from socio as s1, socio as s2, ha_letto as h1, ha_letto as h2 where s1.id_socio!=s2.id_socio and s1.id_socio=h1.socio and s2.id_socio=h2.socio and h1.ISBN!=h2.ISBN group by (s1.nome, s2.nome);
 
-/*q*/select s.nome from socio s where s.id_socio=(select h.socio from ha_letto h where h.isbn in (select l.isbn from libro l where l.genere='poesia') group by h.socio having count(*) = (select count(*) from libro l2 where l2.genere='poesia'));
+/*q*/select s.nome from socio s where s.id_socio in
+(select h.socio from ha_letto h where h.isbn in
+	(select l.isbn from libro l where l.genere='poesia') group by h.socio having count(*) =
+	(select count(*) from libro l2 where l2.genere='poesia')
+);
+
 /*r*/select l.titolo, h.isbn from libro as l, ha_letto as h where l.ISBN=h.ISBN group by (h.ISBN, l.titolo) having count(h.ISBN)>1;
 
 /*s*/select socio, count(socio) from ha_letto group by socio;
@@ -88,7 +93,7 @@ create table ha_letto(
 
 /*u*/select autore, count(autore) from libro group by autore;
 
-/*v*/select s.nome, count(s.nome) from socio s, ha_letto h where s.id_socio=h.socio group by s.nome having count(h.isbn)< any (select count(h.isbn) from ha_letto h, socio s where s.id_socio=h.socio and s.nome = 'Clotilde Bianchi'); 
+/*v*/select s.nome, count(s.nome) from socio s, ha_letto h where s.id_socio=h.socio group by s.nome having count(h.isbn)< any (select count(h.isbn) from ha_letto h, socio s where s.id_socio=h.socio and s.nome = 'Clotilde Bianchi');
 
 /*w*/select l.autore, count(l.autore) from libro l, ha_letto h, socio s where l.isbn=h.isbn and h.socio=s.id_socio and s.sesso='F' group by l.autore order by l.autore asc limit 1;
 
@@ -112,4 +117,3 @@ $BODY$
 LANGUAGE PLPGSQL;
 
 create trigger archivia_socio after delete on socio for each row execute procedure archivia_socio();
-

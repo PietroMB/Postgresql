@@ -63,7 +63,9 @@ select * from treno where stazionep in (select codice from stazione where citta=
 
 select * from treno where stazionep not in (select codice from stazione where citta='Bologna');
 
-select x.azienda from treno x where x.stazionep in (select s.codice from stazione s) group by x.azienda having count (*) = (select count(*) from stazione);
+select x.azienda from treno x, stazione s where x.stazionep=s.codice 
+group by x.azienda having count (*) =
+(select count(*) from stazione);
 
 /*java*/
 /*
@@ -92,7 +94,7 @@ select x.azienda from treno x where x.stazionep in (select s.codice from stazion
 alter table citta add numStazioni int;
 
 create function contac() returns trigger as $BODY$
-	declare 
+	declare
 	citta varchar(50);
 	begin
 

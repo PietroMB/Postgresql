@@ -5,8 +5,9 @@ $BODY$
 	variabile [tipo];
 
 	begin
-		query
+		query;
 		--new riferito a variabile locale
+		RETURN NEW;
 	end
 $BODY$
 LANGUAGE PLPGSQL;
