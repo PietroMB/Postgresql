@@ -4,7 +4,7 @@ create schema biblioteca;/*crea lo schema*/
 
 set search_path to biblioteca;/*comando pratico per non definire ogni volta schema.**/
 
-/*------------------------inserimento delle tabelle------------------------*/
+/*------------------------inserimento delle tabelle------------------------*/ 
 
 create table scrittore(
 	nome varchar(50) primary key,
